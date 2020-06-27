@@ -46,7 +46,6 @@ class LoginVC: UIViewController {
 
     @IBAction func SignIn(_sender: AnyObject) {
         if let email = emailField.text, let password = passwordField.text {
-            
             Auth.auth().signIn(withEmail: email, password: password, completion: {
                 (user, error) in
                 
@@ -59,7 +58,6 @@ class LoginVC: UIViewController {
                 } else {
                     self.performSegue(withIdentifier: "toSignUp", sender: nil)
                 }
-                
                 
             })
         }

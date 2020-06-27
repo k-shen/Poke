@@ -36,7 +36,6 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
         imagePicker = UIImagePickerController()
         imagePicker.delegate=self
         
-        
         imagePicker.allowsEditing = true
         
 
@@ -45,7 +44,7 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     
     override func viewDidDisappear(_ animated: Bool) {
         if let _ = KeychainWrapper.standard.string(forKey: "uid") {
-            performSegue(withIdentifier: "toMessage", sender: nil)
+            performSegue(withIdentifier: "toMessages", sender: nil)
         }
         
     }
@@ -115,22 +114,6 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                 }
             }
             
-            /*
-            Storage.storage().reference().child(imgUid).putData(imgData, metadata: metadata) {
-                (metadata, error) in
-                if error != nil {
-                    print("Did not upload image")
-                } else {
-                    print("Uploaded")
-                    let downloadURL = metadata?.downloadURL()?.absoluteString
-             
-             if let url = downloadURL {
-             self.setUser(img: url)
-                    
-                }
-            }
-            */
-            
         }
     }
     
@@ -139,15 +122,21 @@ class SignUpVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
             (user, error) in
             if error != nil {
                 print("Can't create user")
+                let myAlert = UIAlertController(title: "loginAlert", message: "Can't create user", preferredStyle: .alert)
+                
+                let dismissAlert = UIAlertAction(title: "Cancel", style: .cancel)
+                myAlert.addAction(dismissAlert)
+                self.present(myAlert, animated: true, completion: nil)
+                
             } else {
                 if let user = user {
                     self.userUid = user.user.uid
                 }
             }
-            
             self.uploadImg()
             
         })
+        
     }
     
     @IBAction func selectedImgPicker (_ sender: AnyObject) {
